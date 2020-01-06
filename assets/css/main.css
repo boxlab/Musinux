@@ -1,0 +1,102 @@
+@import url(~/assets/css/poppins.css);
+
+.page-enter-active, .page-leave-active {
+  transition: all .25s
+}
+
+.page-enter, .page-leave-to {
+  -webkit-transform: translateY(1.25rem);
+  transform: translateY(1.25rem);
+  opacity: 0
+}
+
+.page-enter-to .page-leave {
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #f4f8fb;
+  font-family: Roboto, 'Microsoft JhengHei', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  width: unset;
+  padding: 1rem;
+  margin-top: 2rem;
+  background: rgba(255, 255, 255, .25) !important;
+  backdrop-filter: blur(20px);
+}
+
+.etcs-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  border-radius: 10px;
+  background: #FFFFFF;
+  box-shadow: 0.5rem 0.875rem 2.375rem rgba(39, 44, 49, .06), 0.0625rem 0.1875rem 0.5rem rgba(39, 44, 49, .03);
+  padding: 1.5rem 15px 15px;
+  transition: all .3s;
+}
+
+.musinux-player {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 64px;
+  box-shadow: 0.5rem 0.875rem 2.375rem rgba(39, 44, 49, .06), 0.0625rem 0.1875rem 0.5rem rgba(39, 44, 49, .03);
+  background: rgba(0, 0, 0, .25);
+  backdrop-filter: blur(20px);
+}
+
+.musinux-player .meta {
+}
+
+.musinux-player .control {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.musinux-player .info {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.musinux-player .progressbar {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.ant-slider-track,
+.ant-slider-rail {
+  height: 2px;
+}
+
+.ant-slider-handle {
+  margin-top: -6px;
+}
+
+/*.musinux-player p {*/
+/*  padding: 0;*/
+/*  margin: .75rem 0;*/
+/*  font-size: .75rem;*/
+/*  font-family: Microsoft JhengHei, sans-serif;*/
+/*}*/
