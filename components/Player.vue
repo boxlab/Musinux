@@ -11,8 +11,8 @@
             <div style="min-width: .7rem;margin-right: 1rem;">
               <img v-if="$store.state.isPlaying" src="/icon/wave.gif" alt="playing"/>
             </div>
-            <div class="mdui-list-item-content">
-              <div class="mdui-list-item-title">{{ this.$store.state.music_meta ?
+            <div class="mdui-list-item-content player-title-box">
+              <div class="mdui-list-item-title player-title-text">{{ this.$store.state.music_meta ?
                 (this.$store.state.music_meta.tags.TITLE || this.$store.state.music_meta.tags.title ||
                 this.$store.state.music_playing)
                 : 'Musinux' }}
@@ -30,7 +30,7 @@
                   @click="action('prev')">
             <i class="mdui-icon material-icons">skip_previous</i>
           </button>
-          <button class="mdui-btn mdui-btn-icon mdui-ripple" mdui-tooltip="{content: '播放'}"
+          <button class="mdui-btn mdui-btn-icon mdui-ripple" mdui-tooltip="{content: '播放/暂停'}"
                   @click="action($store.state.isPlaying ? 'pause' : 'resume')">
             <i class="mdui-icon material-icons">{{ $store.state.isPlaying ? 'pause' : 'play_arrow' }}</i>
           </button>
@@ -40,7 +40,7 @@
           </button>
         </div>
         <div class="info mdui-col-md-4 mdui-hidden-sm-down">
-          <span>02:13 / 04:35</span>
+          <span>{{ `${formatMusicTime($store.state.music_progress)} / ${formatMusicTime(this.$store.state.music_meta ? this.$store.state.music_meta.duration : 0)}` }}</span>
         </div>
       </div>
     </div>
@@ -49,6 +49,7 @@
 
 <script>
   import qs from 'qs';
+  import moment from 'moment';
 
   export default {
     name: "Player",
@@ -58,6 +59,7 @@
       }
     },
     mounted() {
+
     },
     methods: {
       notify(title, content, type = 'info', key = null) {
@@ -69,9 +71,26 @@
       },
       action(type) {
         let self = this;
-        this.$axios.post('http://10.1.1.101:5000/control', qs.stringify({
+        let payload = {
           action: type,
-        }))
+        };
+        switch (type) {
+          case 'prev':
+            payload = {
+              action: 'play',
+              isPlaylist: 0,
+              mark: this.$store.state.playlist[this.$store.state.playlist.indexOf(this.$store.state.music_playing) - 1],
+            };
+            break;
+          case 'next':
+            payload = {
+              action: 'play',
+              isPlaylist: 0,
+              mark: this.$store.state.playlist[this.$store.state.playlist.indexOf(this.$store.state.music_playing) + 1],
+            };
+            break;
+        }
+        this.$axios.post('http://10.1.1.101:5000/control', qs.stringify(payload))
           .then((res) => {
             return res.data
           })
@@ -86,10 +105,36 @@
       progressAdj(data) {
         console.log(data);
       },
+      formatMusicTime(timestamp) {
+        return moment(timestamp * 1000).format('mm:ss')
+      }
     },
   }
 </script>
 
-<style scoped>
+<style>
+  .player-title-box {
+    overflow: hidden;
+  }
 
+  .player-title-text {
+    display: inline-block;
+    white-space: nowrap;
+    /*animation: 3s wordsLoop linear infinite normal;*/
+  }
+
+  .player-title-text.animation {
+    animation: 5s wordsLoop linear infinite normal;
+  }
+
+  @keyframes wordsLoop {
+    0% {
+      transform: translateX(100%);
+      -webkit-transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+      -webkit-transform: translateX(-100%);
+    }
+  }
 </style>

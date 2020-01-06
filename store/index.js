@@ -1,6 +1,6 @@
 export const state = () => ({
   isPlaying: false,
-  music_list: null,
+  playlist: null,
   music_playing: null,
   music_progress: 0.0,
   music_meta: null,
@@ -11,7 +11,7 @@ export const mutations = {
     state.isPlaying = isPlaying;
   },
   setMusicList(state, list) {
-    state.music_list = list;
+    state.playlist = list;
   },
   setPlayingMusic(state, playingMusic) {
     state.music_playing = playingMusic;

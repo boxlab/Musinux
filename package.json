@@ -16,6 +16,7 @@
     "ant-design-vue": "^1.1.10",
     "jquery": "^3.4.1",
     "mdui": "^0.4.3",
+    "moment": "^2.24.0",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {}

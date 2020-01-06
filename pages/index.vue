@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr class="list" v-for="(music, key) in $store.state.music_list" :key="key">
+            <tr class="list" v-for="(music, key) in $store.state.playlist" :key="key">
               <td style="text-align: center;" v-if="music === $store.state.music_playing && $store.state.isPlaying">
                 <i class="mdui-icon material-icons mdui-text-color-black-disabled mdui-list-item-icon">
                   <img src="/icon/wave.gif" alt="playing"/>
@@ -52,15 +52,9 @@
       mdui.mutation();
       this.updateMusicList();
     },
-    beforeDestroy() {
-      clearInterval(this.th_status);
-      this.th_status = null;
-    },
     methods: {
       play(name) {
         let self = this;
-        self.$store.commit('setPlaying', false);
-        self.$store.commit('setPlayingMusic', null);
         this.$axios.post('http://10.1.1.101:5000/control', qs.stringify({
           action: 'play',
           isPlaylist: 0,
@@ -72,8 +66,6 @@
           .then((res) => {
             if (res.error === 0) {
               this.notify('开始播放', name, 'info');
-              self.$store.commit('setPlaying', true);
-              self.$store.commit('setPlayingMusic', name);
             } else {
               this.notify('播放失败', `服务器返回错误码 [${res.error}]`, 'error');
             }
@@ -82,7 +74,6 @@
             console.log(e);
             this.notify('播放失败', e.toString(), 'error');
           });
-        console.log('Start playing: ' + name)
       },
       notify(title, content, type = 'info', key = 'globalKey') {
         this.$notification[type]({

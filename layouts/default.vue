@@ -28,9 +28,11 @@
     },
     beforeMount() {
       let self = this;
-      this.th_status = setInterval(function () {
-        self.updateStatus();
-      }, 1000);
+      if (this.th_status === null) {
+        this.th_status = setInterval(function () {
+          self.updateStatus();
+        }, 1000);
+      }
     },
     mounted() {
       mdui.mutation();
@@ -42,6 +44,16 @@
       this.updateBackground($nuxt.$route.name);
     },
     methods: {
+      rollingTitle() {
+        let textEl = $('.player-title-text');
+        let containerLength = $('.player-title-box').width();
+        let textLength = textEl[0].scrollWidth;
+        if (textLength > containerLength) {
+          textEl.addClass('animation');
+        } else {
+          textEl.removeClass('animation');
+        }
+      },
       imgPreload(arr) {
         let img = [];
         for (let i = 0; i < arr.length; i++) {
@@ -90,6 +102,7 @@
               this.notify('出现错误', `获取状态失败[${res.message}]`, 'error', 'fetchStatusFailed');
             }
           });
+        this.rollingTitle();
       },
     },
     watch: {
