@@ -76,17 +76,23 @@
         };
         switch (type) {
           case 'prev':
+            let position_prev = this.$store.state.playlist.indexOf(this.$store.state.music_playing) - 1;
+            if (position_prev < 0)
+              position_prev = this.$store.state.playlist.length - 1;
             payload = {
               action: 'play',
               isPlaylist: 0,
-              mark: this.$store.state.playlist[this.$store.state.playlist.indexOf(this.$store.state.music_playing) - 1],
+              mark: this.$store.state.playlist[position_prev],
             };
             break;
           case 'next':
+            let position_next = this.$store.state.playlist.indexOf(this.$store.state.music_playing) + 1;
+            if (position_next > this.$store.state.playlist.length - 1)
+              position_next = 0;
             payload = {
               action: 'play',
               isPlaylist: 0,
-              mark: this.$store.state.playlist[this.$store.state.playlist.indexOf(this.$store.state.music_playing) + 1],
+              mark: this.$store.state.playlist[position_next],
             };
             break;
         }
